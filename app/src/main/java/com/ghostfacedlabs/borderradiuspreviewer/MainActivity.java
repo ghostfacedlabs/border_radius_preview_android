@@ -1,5 +1,8 @@
 package com.ghostfacedlabs.borderradiuspreviewer;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -19,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         EditText topLeft = findViewById(R.id.top_left);
         EditText topRight = findViewById(R.id.top_right);
         EditText bottomLeft = findViewById(R.id.bottom_left);
         EditText bottomRight = findViewById(R.id.bottom_right);
         Button changeButton = findViewById(R.id.button);
         Button resetButton = findViewById(R.id.reset);
+        Button copyButton = findViewById(R.id.copy);
         float[] radii = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
 
         // draw rectangle on screen
@@ -35,13 +38,32 @@ public class MainActivity extends AppCompatActivity {
         View boxView = findViewById(R.id.boxView);
         boxView.setBackground(box);
 
+        copyButton.setOnClickListener(view -> {
+            ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+
+            StringBuilder builder = new StringBuilder();
+            // border-radius: 1px 0 3px 4px;
+            builder.append("border-radius: ")
+                    .append((int) radii[0])
+                    .append("px ")
+                    .append((int) radii[2])
+                    .append("px ")
+                    .append((int) radii[4])
+                    .append("px ")
+                    .append((int) radii[6])
+                    .append("px;");
+            ClipData clip = ClipData.newPlainText("CSS:", builder);
+            clipboard.setPrimaryClip(clip);
+
+        });
+
 
         resetButton.setOnClickListener(view -> {
             Arrays.fill(radii, 0);
-            topLeft.setText(getResources().getText(R.string.default_dp));
-            topRight.setText(getResources().getText(R.string.default_dp));
-            bottomRight.setText(getResources().getText(R.string.default_dp));
-            bottomLeft.setText(getResources().getText(R.string.default_dp));
+            topLeft.getText().clear();
+            topRight.getText().clear();
+            bottomRight.getText().clear();
+            bottomLeft.getText().clear();
 
             box.setCornerRadii(radii);
         });

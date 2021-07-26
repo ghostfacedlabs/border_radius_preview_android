@@ -7,4 +7,5 @@
     <string name="bottom_left">Bottom left:</string>
     <string name="bottom_right">Bottom right:</string>
     <string name="default_dp">0</string>
+    <string name="copyButton">Copy</string>
 </resources>
