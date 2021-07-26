@@ -12,6 +12,8 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String ERROR_MESSAGE = "Issue with field, enter valid number";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +25,10 @@ public class MainActivity extends AppCompatActivity {
         EditText bottomLeft = findViewById(R.id.bottom_left);
         EditText bottomRight = findViewById(R.id.bottom_right);
         Button changeButton = findViewById(R.id.button);
-        float[] radii = new float[] {0, 0, 0, 0, 0, 0, 0, 0};
+        Button resetButton = findViewById(R.id.reset);
+        float[] radii = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
 
+        // draw rectangle on screen
         GradientDrawable box = new GradientDrawable();
         box.setColor(ContextCompat.getColor(this,
                 R.color.orange_main));
@@ -32,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
         boxView.setBackground(box);
 
 
+        resetButton.setOnClickListener(view -> {
+            Arrays.fill(radii, 0);
+            topLeft.setText(getResources().getText(R.string.default_dp));
+            topRight.setText(getResources().getText(R.string.default_dp));
+            bottomRight.setText(getResources().getText(R.string.default_dp));
+            bottomLeft.setText(getResources().getText(R.string.default_dp));
+
+            box.setCornerRadii(radii);
+        });
 
         changeButton.setOnClickListener(view -> {
 
@@ -54,23 +67,37 @@ public class MainActivity extends AppCompatActivity {
                     bottomL = "0";
                 }
 
-                int tL = Integer.parseInt(topL);
-                int tR = Integer.parseInt(topR);
-                int bL = Integer.parseInt(bottomL);
-                int bR = Integer.parseInt(bottomR);
+                try {
+                    int tL = Integer.parseInt(topL);
+                    radii[0] = tL;
+                    radii[1] = tL;
+                } catch (NumberFormatException n) {
+                    topLeft.setError(ERROR_MESSAGE);
+                }
+                try {
+                    int tR = Integer.parseInt(topR);
+                    radii[2] = tR;
+                    radii[3] = tR;
+                } catch (NumberFormatException n) {
+                    topRight.setError(ERROR_MESSAGE);
+                }
+                try {
+                    int bL = Integer.parseInt(bottomL);
+                    radii[6] = bL;
+                    radii[7] = bL;
+                } catch (NumberFormatException n) {
+                    bottomLeft.setError(ERROR_MESSAGE);
+                }
+                try {
+                    int bR = Integer.parseInt(bottomR);
+                    radii[4] = bR;
+                    radii[5] = bR;
+                } catch (NumberFormatException n) {
+                    bottomRight.setError(ERROR_MESSAGE);
+                }
 
-                radii[0] = tL;
-                radii[1] = tL;
-                radii[2] = tR;
-                radii[3] = tR;
-                radii[4] = bR;
-                radii[5] = bR;
-                radii[6] = bL;
-                radii[7] = bL;
 
             } catch (NumberFormatException n) {
-                topLeft.setError("Issue with top left");
-                System.out.println(Arrays.toString(n.getStackTrace()));
                 System.out.println(n.getMessage());
 
             }
