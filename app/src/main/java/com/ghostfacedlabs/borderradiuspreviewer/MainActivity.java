@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -39,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         boxView.setBackground(box);
 
         copyButton.setOnClickListener(view -> {
-            ClipboardManager clipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
-
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             StringBuilder builder = new StringBuilder();
-            // border-radius: 1px 0 3px 4px;
+
+            // build string with values from radius array and format in CSS style
             builder.append("border-radius: ")
                     .append((int) radii[0])
                     .append("px ")
@@ -52,11 +53,15 @@ public class MainActivity extends AppCompatActivity {
                     .append("px ")
                     .append((int) radii[6])
                     .append("px;");
+
+            // copy css string to clipboard
             ClipData clip = ClipData.newPlainText("CSS:", builder);
             clipboard.setPrimaryClip(clip);
 
-        });
+            Toast toast = Toast.makeText(getApplicationContext(), "Copied!", Toast.LENGTH_LONG);
+            toast.show();
 
+        });
 
         resetButton.setOnClickListener(view -> {
             Arrays.fill(radii, 0);
