@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Border Radius Previewer</string>
+    <string name="button_text">Change Radius</string>
+    <string name="top_left">Top left:</string>
+    <string name="top_right">Top right:</string>
+    <string name="bottom_left">Bottom left:</string>
+    <string name="bottom_right">Bottom right:</string>
+    <string name="default_dp">0</string>
+</resources>
