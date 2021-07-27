@@ -2,10 +2,14 @@
     <string name="app_name">Border Radius Previewer</string>
     <string name="button_text">Change Radius</string>
     <string name="reset_text">Reset</string>
-    <string name="top_left">Top left:</string>
-    <string name="top_right">Top right:</string>
-    <string name="bottom_left">Bottom left:</string>
-    <string name="bottom_right">Bottom right:</string>
+    <string name="top_leftX">Top left X:</string>
+    <string name="top_leftY">Top left Y:</string>
+    <string name="top_rightX">Top right X:</string>
+    <string name="top_rightY">Top right Y:</string>
+    <string name="bottom_rightX">Bottom right X:</string>
+    <string name="bottom_rightY">Bottom right Y:</string>
+    <string name="bottom_leftX">Bottom left X:</string>
+    <string name="bottom_leftY">Bottom left Y:</string>
     <string name="default_dp">0</string>
     <string name="copyButton">Copy</string>
 </resources>

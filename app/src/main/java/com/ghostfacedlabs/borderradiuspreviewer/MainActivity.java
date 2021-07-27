@@ -12,21 +12,27 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String ERROR_MESSAGE = "Issue with field, enter valid number";
+    // public static final String ERROR_MESSAGE = "Issue with field, enter valid number";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText topLeft = findViewById(R.id.top_left);
-        EditText topRight = findViewById(R.id.top_right);
-        EditText bottomLeft = findViewById(R.id.bottom_left);
-        EditText bottomRight = findViewById(R.id.bottom_right);
+        EditText topLeftX = findViewById(R.id.top_left_x);
+        EditText topLeftY = findViewById(R.id.top_left_y);
+        EditText topRightX = findViewById(R.id.top_right_x);
+        EditText topRightY = findViewById(R.id.top_right_y);
+        EditText bottomRightX = findViewById(R.id.bottom_right_x);
+        EditText bottomRightY = findViewById(R.id.bottom_right_y);
+        EditText bottomLeftX = findViewById(R.id.bottom_left_x);
+        EditText bottomLeftY = findViewById(R.id.bottom_left_y);
+
         Button changeButton = findViewById(R.id.button);
         Button resetButton = findViewById(R.id.reset);
         Button copyButton = findViewById(R.id.copy);
@@ -57,18 +63,23 @@ public class MainActivity extends AppCompatActivity {
             // copy css string to clipboard
             ClipData clip = ClipData.newPlainText("CSS:", builder);
             clipboard.setPrimaryClip(clip);
+            System.out.println(builder);
 
-            Toast toast = Toast.makeText(getApplicationContext(), "Copied!", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Copied", Toast.LENGTH_SHORT);
             toast.show();
 
         });
 
         resetButton.setOnClickListener(view -> {
             Arrays.fill(radii, 0);
-            topLeft.getText().clear();
-            topRight.getText().clear();
-            bottomRight.getText().clear();
-            bottomLeft.getText().clear();
+            topLeftX.getText().clear();
+            topLeftY.getText().clear();
+            topRightX.getText().clear();
+            topRightY.getText().clear();
+            bottomRightX.getText().clear();
+            bottomRightY.getText().clear();
+            bottomLeftX.getText().clear();
+            bottomLeftY.getText().clear();
 
             box.setCornerRadii(radii);
         });
@@ -76,57 +87,46 @@ public class MainActivity extends AppCompatActivity {
         changeButton.setOnClickListener(view -> {
 
             try {
-                String topL = topLeft.getText().toString();
-                String topR = topRight.getText().toString();
-                String bottomR = bottomRight.getText().toString();
-                String bottomL = bottomLeft.getText().toString();
+                String topLX = topLeftX.getText().toString();
+                String topLY = topLeftY.getText().toString();
+                String topRX = topRightX.getText().toString();
+                String topRY = topRightY.getText().toString();
+                String bottomRX = bottomRightX.getText().toString();
+                String bottomRY = bottomRightY.getText().toString();
+                String bottomLX = bottomLeftX.getText().toString();
+                String bottomLY = bottomLeftY.getText().toString();
 
-                if (topL.isEmpty()) {
-                    topL = "0";
-                }
-                if (topR.isEmpty()) {
-                    topR = "0";
-                }
-                if (bottomR.isEmpty()) {
-                    bottomR = "0";
-                }
-                if (bottomL.isEmpty()) {
-                    bottomL = "0";
-                }
+                ArrayList<String> stringsOfEditTexts = new ArrayList<>();
+                stringsOfEditTexts.add(topLX);
+                stringsOfEditTexts.add(topLY);
+                stringsOfEditTexts.add(topRX);
+                stringsOfEditTexts.add(topRY);
+                stringsOfEditTexts.add(bottomRX);
+                stringsOfEditTexts.add(bottomRY);
+                stringsOfEditTexts.add(bottomLX);
+                stringsOfEditTexts.add(bottomLY);
 
-                try {
-                    int tL = Integer.parseInt(topL);
-                    radii[0] = tL;
-                    radii[1] = tL;
-                } catch (NumberFormatException n) {
-                    topLeft.setError(ERROR_MESSAGE);
-                }
-                try {
-                    int tR = Integer.parseInt(topR);
-                    radii[2] = tR;
-                    radii[3] = tR;
-                } catch (NumberFormatException n) {
-                    topRight.setError(ERROR_MESSAGE);
-                }
-                try {
-                    int bL = Integer.parseInt(bottomL);
-                    radii[6] = bL;
-                    radii[7] = bL;
-                } catch (NumberFormatException n) {
-                    bottomLeft.setError(ERROR_MESSAGE);
-                }
-                try {
-                    int bR = Integer.parseInt(bottomR);
-                    radii[4] = bR;
-                    radii[5] = bR;
-                } catch (NumberFormatException n) {
-                    bottomRight.setError(ERROR_MESSAGE);
-                }
+                // loop through all edit texts, parse them to ints, add them to radii array
+                int index = 0;
+                int toAdd;
+                for (String s : stringsOfEditTexts) {
+                    if (s.isEmpty()) {
+                        s = "0";
+                    }
+                    try {
+                        toAdd = Integer.parseInt(s);
+                    } catch (NumberFormatException n) {
+                        toAdd = 0;
+                        Toast toast = Toast.makeText(getApplicationContext(), "Issue with numbers, check format", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    radii[index] = toAdd;
+                    index++;
 
 
-            } catch (NumberFormatException n) {
-                System.out.println(n.getMessage());
-
+                }
+            } catch (Exception e) {
+                System.out.println("Something went wrong: " + e.getMessage());
             }
             box.setCornerRadii(radii);
         });
